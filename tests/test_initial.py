@@ -1,3 +1,7 @@
+from pathlib import Path
+
+import pytest
+
 from nflprops.data import load_player_games
 
 
@@ -12,6 +16,8 @@ EXPECTED_RECEIVING_YARDS = 75
 
 
 def test_receiving_yards_matches_ground_truth() -> None:
+    if not Path("data/raw/player_stats").exists():
+        pytest.skip("no player_stats snapshot; run snapshot() first")
     df = load_player_games(SEASON)
     row = df[(df.player_id == PLAYER_ID)
              & (df.week == WEEK)
